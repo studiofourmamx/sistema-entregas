@@ -1,1 +1,1094 @@
-index.html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Calcetas - Control de Ventas</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --warm-white: #FFFFFF;
+    --terracotta: #C4614A;
+    --terracotta-light: #E8866F;
+    --terracotta-dark: #9E4A36;
+    --sage: #7A9E87;
+    --sage-light: #A8C4B0;
+    --charcoal: #2C2C2C;
+    --gray-mid: #888;
+    --gray-light: #E8E4DC;
+    --gray-border: #DDD8CF;
+    --warning: #D4913A;
+    --danger: #C4614A;
+    --success: #7A9E87;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-card: 0 2px 12px rgba(0,0,0,0.06);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--charcoal);
+    color: white;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-icon {
+    width: 36px; height: 36px;
+    background: var(--terracotta);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand-icon svg { width:20px; height:20px; fill:white; }
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    letter-spacing: -0.3px;
+  }
+  .brand-sub { font-size:0.7rem; color: #999; letter-spacing:1px; text-transform:uppercase; }
+  .header-date { font-size:0.8rem; color:#aaa; }
+
+  /* TABS NAV */
+  .tabs-nav {
+    background: white;
+    border-bottom: 2px solid var(--gray-light);
+    display: flex;
+    padding: 0 32px;
+    gap: 4px;
+  }
+  .tab-btn {
+    padding: 14px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    border: none;
+    background: none;
+    color: var(--gray-mid);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn.active {
+    color: var(--terracotta);
+    border-bottom-color: var(--terracotta);
+  }
+  .tab-btn:hover:not(.active) { color: var(--charcoal); }
+
+  /* MAIN CONTENT */
+  .main { padding: 28px 32px; max-width: 1100px; margin: 0 auto; }
+
+  /* TAB PANELS */
+  .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* RESUMEN CARDS */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .summary-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: var(--shadow-card);
+    border-left: 4px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-card.terracotta { border-left-color: var(--terracotta); }
+  .summary-card.sage { border-left-color: var(--sage); }
+  .summary-card.warning { border-left-color: var(--warning); }
+  .summary-card.gray { border-left-color: #bbb; }
+  .summary-card .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--gray-mid);
+    margin-bottom: 6px;
+  }
+  .summary-card .value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--charcoal);
+    line-height: 1;
+  }
+  .summary-card .sub {
+    font-size: 0.78rem;
+    color: #aaa;
+    margin-top: 6px;
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--charcoal);
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn-primary {
+    background: var(--terracotta);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--terracotta-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(196,97,74,0.35); }
+  .btn-sage {
+    background: var(--sage);
+    color: white;
+  }
+  .btn-sage:hover { background: #5f8a6e; transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--terracotta);
+    border: 1.5px solid var(--terracotta);
+  }
+  .btn-ghost:hover { background: var(--terracotta); color: white; }
+  .btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+  .btn-danger { background: #f0e0dc; color: var(--terracotta-dark); }
+  .btn-danger:hover { background: var(--terracotta); color: white; }
+
+  /* TABLE */
+  .table-wrap {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead { background: var(--charcoal); }
+  thead th {
+    padding: 13px 16px;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #ccc;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--gray-light);
+    transition: background 0.15s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #faf8f5; }
+  tbody td {
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    vertical-align: middle;
+  }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge-green { background: #e3f1e8; color: #3d7a52; }
+  .badge-orange { background: #fdecd8; color: #b06a1a; }
+  .badge-red { background: #fde3dc; color: #9e3a25; }
+  .badge-gray { background: #f0eeea; color: #777; }
+
+  /* FORMS */
+  .form-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+  }
+  .form-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--charcoal);
+    padding-bottom: 12px;
+    border-bottom: 1.5px solid var(--gray-light);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gray-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--charcoal);
+    background: var(--cream);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--terracotta);
+    background: white;
+  }
+  .form-group textarea { resize: vertical; min-height: 70px; }
+
+  /* ESTUDIO CARDS */
+  .estudios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .estudio-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow-card);
+    border: 1.5px solid var(--gray-light);
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .estudio-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .estudio-card-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+  }
+  .estudio-card-contact { font-size: 0.8rem; color: var(--gray-mid); margin-bottom: 14px; }
+  .estudio-card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--gray-light);
+  }
+  .stat-item { text-align: center; }
+  .stat-item .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    display: block;
+  }
+  .stat-item .stat-label { font-size: 0.72rem; color: var(--gray-mid); }
+  .estudio-card-actions { display: flex; gap: 6px; margin-top: 14px; }
+
+  .saldo-pill {
+    position: absolute;
+    top: 16px; right: 16px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #bbb;
+  }
+  .empty-state p { font-size: 0.9rem; margin-top: 8px; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(3px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white;
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+  .modal-header {
+    padding: 22px 26px 16px;
+    border-bottom: 1px solid var(--gray-light);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-header h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; }
+  .modal-close {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none; background: var(--gray-light);
+    cursor: pointer; font-size: 1.1rem; color: var(--gray-mid);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: #ddd; }
+  .modal-body { padding: 22px 26px; }
+  .modal-footer { padding: 16px 26px 22px; display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--charcoal);
+    color: white;
+    padding: 13px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+    z-index: 300;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-left: 4px solid var(--sage); }
+  .toast.error { border-left: 4px solid var(--terracotta); }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 18px; flex-wrap: wrap;
+  }
+  .filter-bar select, .filter-bar input {
+    padding: 9px 14px;
+    border: 1.5px solid var(--gray-border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.86rem;
+    background: white;
+    color: var(--charcoal);
+    outline: none;
+  }
+  .filter-bar select:focus, .filter-bar input:focus { border-color: var(--terracotta); }
+
+  /* AMOUNT COLORS */
+  .amount-total { font-weight: 600; color: var(--charcoal); }
+  .amount-pagado { color: var(--sage); font-weight: 600; }
+  .amount-saldo { font-weight: 700; }
+  .amount-saldo.danger { color: var(--terracotta); }
+  .amount-saldo.ok { color: var(--sage); }
+
+  /* HISTORIAL PAGOS */
+  .pagos-list { display: flex; flex-direction: column; gap: 8px; }
+  .pago-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--cream);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--sage);
+  }
+  .pago-item .pago-info { font-size: 0.83rem; color: var(--gray-mid); }
+  .pago-item .pago-monto { font-weight: 700; color: var(--sage); }
+
+  @media (max-width: 640px) {
+    .main { padding: 20px 16px; }
+    header { padding: 0 16px; }
+    .tabs-nav { padding: 0 12px; overflow-x: auto; }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24"><path d="M6 2h12l2 5H4l2-5zm0 7c0 0-2 1-2 6s2 7 2 7h12s2-2 2-7-2-6-2-6H6z"/></svg>
+    </div>
+    <div>
+      <div class="brand-name">Calcetas</div>
+      <div class="brand-sub">Control de Ventas</div>
+    </div>
+  </div>
+  <div class="header-date" id="headerDate"></div>
+</header>
+
+<div class="tabs-nav">
+  <button class="tab-btn active" data-tab="resumen">Resumen General</button>
+  <button class="tab-btn" data-tab="estudios">Estudios de Pilates</button>
+  <button class="tab-btn" data-tab="entregas">Entregas</button>
+  <button class="tab-btn" data-tab="pagos">Pagos Recibidos</button>
+</div>
+
+<div class="main">
+
+  <!-- TAB: RESUMEN -->
+  <div class="tab-panel active" id="tab-resumen">
+    <div class="summary-grid" id="summaryGrid"></div>
+    <div class="section-header">
+      <div class="section-title">Estado por Estudio</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Estudio</th>
+            <th>Calcetas Entregadas</th>
+            <th>Total Facturado</th>
+            <th>Total Pagado</th>
+            <th>Saldo Pendiente</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="resumenTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: ESTUDIOS -->
+  <div class="tab-panel" id="tab-estudios">
+    <div class="form-card">
+      <div class="form-title">Agregar Nuevo Estudio</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre del Estudio *</label>
+          <input type="text" id="estNombre" placeholder="Ej. Pilates Zen" />
+        </div>
+        <div class="form-group">
+          <label>Contacto</label>
+          <input type="text" id="estContacto" placeholder="Nombre del encargado" />
+        </div>
+        <div class="form-group">
+          <label>Telefono</label>
+          <input type="tel" id="estTel" placeholder="+52 55..." />
+        </div>
+        <div class="form-group">
+          <label>Ciudad</label>
+          <input type="text" id="estCiudad" placeholder="Ej. CDMX" />
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="agregarEstudio()">Guardar Estudio</button>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">Estudios Registrados</div>
+    </div>
+    <div class="estudios-grid" id="estudiosGrid"></div>
+  </div>
+
+  <!-- TAB: ENTREGAS -->
+  <div class="tab-panel" id="tab-entregas">
+    <div class="form-card">
+      <div class="form-title">Registrar Nueva Entrega</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Estudio *</label>
+          <select id="entEstudio">
+            <option value="">-- Selecciona un estudio --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de Entrega *</label>
+          <input type="date" id="entFecha" />
+        </div>
+        <div class="form-group">
+          <label>Cantidad de Calcetas *</label>
+          <input type="number" id="entCantidad" placeholder="0" min="1" />
+        </div>
+        <div class="form-group">
+          <label>Precio por par ($)</label>
+          <input type="number" id="entPrecio" placeholder="0.00" min="0" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label>No. Remision</label>
+          <input type="text" id="entRemision" placeholder="Ej. REM-001" />
+        </div>
+        <div class="form-group">
+          <label>Notas</label>
+          <input type="text" id="entNotas" placeholder="Modelo, talla, etc." />
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="agregarEntrega()">Registrar Entrega</button>
+        <div id="totalPreview" style="font-family:'DM Serif Display',serif; font-size:1.1rem; color:var(--terracotta);"></div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">Historial de Entregas</div>
+    </div>
+    <div class="filter-bar">
+      <select id="filtroEstudioE" onchange="renderEntregas()">
+        <option value="">Todos los estudios</option>
+      </select>
+      <input type="month" id="filtroMesE" onchange="renderEntregas()" />
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Estudio</th>
+            <th>Remision</th>
+            <th>Cantidad</th>
+            <th>Precio/par</th>
+            <th>Total</th>
+            <th>Notas</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="entregasTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: PAGOS -->
+  <div class="tab-panel" id="tab-pagos">
+    <div class="form-card">
+      <div class="form-title">Registrar Pago Recibido</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Estudio *</label>
+          <select id="pagoEstudio">
+            <option value="">-- Selecciona un estudio --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de Pago *</label>
+          <input type="date" id="pagoFecha" />
+        </div>
+        <div class="form-group">
+          <label>Monto Recibido ($) *</label>
+          <input type="number" id="pagoMonto" placeholder="0.00" min="0" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label>Forma de Pago</label>
+          <select id="pagoForma">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Cheque">Cheque</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Referencia / Comprobante</label>
+          <input type="text" id="pagoRef" placeholder="Numero de transferencia, etc." />
+        </div>
+        <div class="form-group">
+          <label>Notas</label>
+          <input type="text" id="pagoNotas" placeholder="Opcional" />
+        </div>
+      </div>
+      <button class="btn btn-sage" onclick="agregarPago()">Registrar Pago</button>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">Historial de Pagos</div>
+    </div>
+    <div class="filter-bar">
+      <select id="filtroEstudioP" onchange="renderPagos()">
+        <option value="">Todos los estudios</option>
+      </select>
+      <input type="month" id="filtroMesP" onchange="renderPagos()" />
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Estudio</th>
+            <th>Monto</th>
+            <th>Forma de Pago</th>
+            <th>Referencia</th>
+            <th>Notas</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="pagosTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- MODAL: REGISTRAR PAGO DESDE ESTUDIO -->
+<div class="modal-overlay" id="modalPago">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Registrar Pago Rapido</h3>
+      <button class="modal-close" onclick="closeModal('modalPago')">x</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.85rem; color:var(--gray-mid); margin-bottom:16px;">Estudio: <strong id="modalEstudioNombre"></strong></p>
+      <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="form-group">
+          <label>Monto ($) *</label>
+          <input type="number" id="modalMonto" placeholder="0.00" min="0" step="0.01"/>
+        </div>
+        <div class="form-group">
+          <label>Fecha *</label>
+          <input type="date" id="modalFecha"/>
+        </div>
+        <div class="form-group">
+          <label>Forma de Pago</label>
+          <select id="modalForma">
+            <option>Efectivo</option>
+            <option>Transferencia</option>
+            <option>Cheque</option>
+            <option>Tarjeta</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Referencia</label>
+          <input type="text" id="modalRef" placeholder="Opcional"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('modalPago')">Cancelar</button>
+      <button class="btn btn-sage btn-sm" onclick="guardarModalPago()">Guardar Pago</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// =========== DATA STORE ===========
+let db = {
+  estudios: [],
+  entregas: [],
+  pagos: []
+};
+
+function loadDB() {
+  try {
+    const saved = localStorage.getItem('calcetas_db_v2');
+    if (saved) db = JSON.parse(saved);
+  } catch(e) {}
+}
+
+function saveDB() {
+  localStorage.setItem('calcetas_db_v2', JSON.stringify(db));
+}
+
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
+// =========== TOAST ===========
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => { t.className = 'toast'; }, 3000);
+}
+
+// =========== MODAL ===========
+let modalCurrentEstudioId = null;
+
+function openModalPago(estudId) {
+  modalCurrentEstudioId = estudId;
+  const est = db.estudios.find(e => e.id === estudId);
+  document.getElementById('modalEstudioNombre').textContent = est ? est.nombre : '';
+  document.getElementById('modalMonto').value = '';
+  document.getElementById('modalFecha').value = todayStr();
+  document.getElementById('modalRef').value = '';
+  document.getElementById('modalPago').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function guardarModalPago() {
+  const monto = parseFloat(document.getElementById('modalMonto').value);
+  const fecha = document.getElementById('modalFecha').value;
+  const forma = document.getElementById('modalForma').value;
+  const ref = document.getElementById('modalRef').value.trim();
+  if (!monto || monto <= 0 || !fecha) { showToast('Completa monto y fecha', 'error'); return; }
+  db.pagos.push({ id: genId(), estudId: modalCurrentEstudioId, fecha, monto, forma, ref, notas: '' });
+  saveDB();
+  closeModal('modalPago');
+  showToast('Pago registrado correctamente');
+  renderAll();
+}
+
+// =========== TABS ===========
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// =========== UTILS ===========
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function fmtDate(d) {
+  if (!d) return '-';
+  const [y, m, day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+function fmtMoney(n) {
+  return '$' + parseFloat(n || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function getEstudioNombre(id) {
+  const e = db.estudios.find(e => e.id === id);
+  return e ? e.nombre : '(eliminado)';
+}
+
+function getStats(estudId) {
+  const entregas = estudId ? db.entregas.filter(e => e.estudId === estudId) : db.entregas;
+  const pagos = estudId ? db.pagos.filter(p => p.estudId === estudId) : db.pagos;
+  const totalCalcetas = entregas.reduce((a, e) => a + (parseInt(e.cantidad) || 0), 0);
+  const totalFacturado = entregas.reduce((a, e) => a + ((parseFloat(e.precio) || 0) * (parseInt(e.cantidad) || 0)), 0);
+  const totalPagado = pagos.reduce((a, p) => a + (parseFloat(p.monto) || 0), 0);
+  const saldo = totalFacturado - totalPagado;
+  return { totalCalcetas, totalFacturado, totalPagado, saldo };
+}
+
+// =========== POPULATE SELECTS ===========
+function populateSelects() {
+  const selects = ['entEstudio', 'pagoEstudio', 'filtroEstudioE', 'filtroEstudioP'];
+  selects.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const isFilter = id.startsWith('filtro');
+    const current = sel.value;
+    sel.innerHTML = isFilter ? '<option value="">Todos los estudios</option>' : '<option value="">-- Selecciona un estudio --</option>';
+    db.estudios.forEach(e => {
+      const opt = document.createElement('option');
+      opt.value = e.id;
+      opt.textContent = e.nombre;
+      sel.appendChild(opt);
+    });
+    if (current) sel.value = current;
+  });
+}
+
+// =========== AGREGAR ESTUDIO ===========
+function agregarEstudio() {
+  const nombre = document.getElementById('estNombre').value.trim();
+  if (!nombre) { showToast('El nombre del estudio es requerido', 'error'); return; }
+  db.estudios.push({
+    id: genId(),
+    nombre,
+    contacto: document.getElementById('estContacto').value.trim(),
+    tel: document.getElementById('estTel').value.trim(),
+    ciudad: document.getElementById('estCiudad').value.trim(),
+    creado: todayStr()
+  });
+  document.getElementById('estNombre').value = '';
+  document.getElementById('estContacto').value = '';
+  document.getElementById('estTel').value = '';
+  document.getElementById('estCiudad').value = '';
+  saveDB();
+  showToast(`Estudio "${nombre}" agregado`);
+  renderAll();
+}
+
+function eliminarEstudio(id) {
+  if (!confirm('Eliminar este estudio y todos sus registros relacionados?')) return;
+  db.estudios = db.estudios.filter(e => e.id !== id);
+  db.entregas = db.entregas.filter(e => e.estudId !== id);
+  db.pagos = db.pagos.filter(p => p.estudId !== id);
+  saveDB();
+  showToast('Estudio eliminado', 'error');
+  renderAll();
+}
+
+// =========== RENDER ESTUDIOS ===========
+function renderEstudios() {
+  const grid = document.getElementById('estudiosGrid');
+  if (!db.estudios.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div style="font-size:2rem;">--</div><p>No hay estudios registrados aun. Agrega el primero arriba.</p></div>`;
+    return;
+  }
+  grid.innerHTML = db.estudios.map(e => {
+    const s = getStats(e.id);
+    const saldoClass = s.saldo > 0 ? 'badge-red' : 'badge-green';
+    const saldoLabel = s.saldo > 0 ? 'Con saldo' : 'Al corriente';
+    return `
+    <div class="estudio-card">
+      <span class="saldo-pill ${saldoClass}">${saldoLabel}</span>
+      <div class="estudio-card-name">${e.nombre}</div>
+      <div class="estudio-card-contact">${e.contacto ? e.contacto : ''}${e.tel ? ' | ' + e.tel : ''}${e.ciudad ? ' | ' + e.ciudad : ''}</div>
+      <div class="estudio-card-stats">
+        <div class="stat-item">
+          <span class="stat-val">${s.totalCalcetas}</span>
+          <span class="stat-label">Calcetas entregadas</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val" style="color:var(--terracotta)">${fmtMoney(s.saldo)}</span>
+          <span class="stat-label">Saldo pendiente</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val" style="font-size:1rem;">${fmtMoney(s.totalFacturado)}</span>
+          <span class="stat-label">Total facturado</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val" style="font-size:1rem; color:var(--sage);">${fmtMoney(s.totalPagado)}</span>
+          <span class="stat-label">Total cobrado</span>
+        </div>
+      </div>
+      <div class="estudio-card-actions">
+        <button class="btn btn-sage btn-sm" onclick="openModalPago('${e.id}')">+ Pago</button>
+        <button class="btn btn-danger btn-sm" onclick="eliminarEstudio('${e.id}')">Eliminar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// =========== AGREGAR ENTREGA ===========
+function agregarEntrega() {
+  const estudId = document.getElementById('entEstudio').value;
+  const fecha = document.getElementById('entFecha').value;
+  const cantidad = parseInt(document.getElementById('entCantidad').value);
+  const precio = parseFloat(document.getElementById('entPrecio').value) || 0;
+  const remision = document.getElementById('entRemision').value.trim();
+  const notas = document.getElementById('entNotas').value.trim();
+  if (!estudId || !fecha || !cantidad || cantidad <= 0) {
+    showToast('Completa estudio, fecha y cantidad', 'error'); return;
+  }
+  db.entregas.push({ id: genId(), estudId, fecha, cantidad, precio, remision, notas });
+  document.getElementById('entCantidad').value = '';
+  document.getElementById('entPrecio').value = '';
+  document.getElementById('entRemision').value = '';
+  document.getElementById('entNotas').value = '';
+  document.getElementById('totalPreview').textContent = '';
+  saveDB();
+  showToast('Entrega registrada correctamente');
+  renderAll();
+}
+
+// Preview total en tiempo real
+['entCantidad','entPrecio'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    const q = parseInt(document.getElementById('entCantidad').value) || 0;
+    const p = parseFloat(document.getElementById('entPrecio').value) || 0;
+    const el = document.getElementById('totalPreview');
+    if (q && p) { el.textContent = 'Total: ' + fmtMoney(q * p); }
+    else { el.textContent = ''; }
+  });
+});
+
+// =========== RENDER ENTREGAS ===========
+function renderEntregas() {
+  const filtroEst = document.getElementById('filtroEstudioE').value;
+  const filtroMes = document.getElementById('filtroMesE').value;
+  let data = [...db.entregas].sort((a,b) => b.fecha.localeCompare(a.fecha));
+  if (filtroEst) data = data.filter(e => e.estudId === filtroEst);
+  if (filtroMes) data = data.filter(e => e.fecha.startsWith(filtroMes));
+  const tbody = document.getElementById('entregasTable');
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="8" class="empty-state">No hay entregas registradas</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(e => {
+    const total = (parseFloat(e.precio) || 0) * (parseInt(e.cantidad) || 0);
+    return `
+    <tr>
+      <td>${fmtDate(e.fecha)}</td>
+      <td><strong>${getEstudioNombre(e.estudId)}</strong></td>
+      <td>${e.remision || '-'}</td>
+      <td><strong>${e.cantidad}</strong></td>
+      <td>${e.precio ? fmtMoney(e.precio) : '-'}</td>
+      <td class="amount-total">${total ? fmtMoney(total) : '-'}</td>
+      <td style="color:var(--gray-mid); font-size:0.83rem;">${e.notas || '-'}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="eliminarEntrega('${e.id}')">Eliminar</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function eliminarEntrega(id) {
+  if (!confirm('Eliminar esta entrega?')) return;
+  db.entregas = db.entregas.filter(e => e.id !== id);
+  saveDB(); showToast('Entrega eliminada', 'error'); renderAll();
+}
+
+// =========== AGREGAR PAGO ===========
+function agregarPago() {
+  const estudId = document.getElementById('pagoEstudio').value;
+  const fecha = document.getElementById('pagoFecha').value;
+  const monto = parseFloat(document.getElementById('pagoMonto').value);
+  const forma = document.getElementById('pagoForma').value;
+  const ref = document.getElementById('pagoRef').value.trim();
+  const notas = document.getElementById('pagoNotas').value.trim();
+  if (!estudId || !fecha || !monto || monto <= 0) {
+    showToast('Completa estudio, fecha y monto', 'error'); return;
+  }
+  db.pagos.push({ id: genId(), estudId, fecha, monto, forma, ref, notas });
+  document.getElementById('pagoMonto').value = '';
+  document.getElementById('pagoRef').value = '';
+  document.getElementById('pagoNotas').value = '';
+  saveDB();
+  showToast('Pago registrado correctamente');
+  renderAll();
+}
+
+// =========== RENDER PAGOS ===========
+function renderPagos() {
+  const filtroEst = document.getElementById('filtroEstudioP').value;
+  const filtroMes = document.getElementById('filtroMesP').value;
+  let data = [...db.pagos].sort((a,b) => b.fecha.localeCompare(a.fecha));
+  if (filtroEst) data = data.filter(p => p.estudId === filtroEst);
+  if (filtroMes) data = data.filter(p => p.fecha.startsWith(filtroMes));
+  const tbody = document.getElementById('pagosTable');
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No hay pagos registrados</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(p => `
+    <tr>
+      <td>${fmtDate(p.fecha)}</td>
+      <td><strong>${getEstudioNombre(p.estudId)}</strong></td>
+      <td class="amount-pagado">${fmtMoney(p.monto)}</td>
+      <td><span class="badge badge-gray">${p.forma}</span></td>
+      <td style="font-size:0.83rem; color:var(--gray-mid);">${p.ref || '-'}</td>
+      <td style="font-size:0.83rem; color:var(--gray-mid);">${p.notas || '-'}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="eliminarPago('${p.id}')">Eliminar</button></td>
+    </tr>`).join('');
+}
+
+function eliminarPago(id) {
+  if (!confirm('Eliminar este pago?')) return;
+  db.pagos = db.pagos.filter(p => p.id !== id);
+  saveDB(); showToast('Pago eliminado', 'error'); renderAll();
+}
+
+// =========== RENDER RESUMEN ===========
+function renderResumen() {
+  const s = getStats(null);
+  const estudiosConSaldo = db.estudios.filter(e => getStats(e.id).saldo > 0).length;
+  document.getElementById('summaryGrid').innerHTML = `
+    <div class="summary-card terracotta">
+      <div class="label">Total Facturado</div>
+      <div class="value">${fmtMoney(s.totalFacturado)}</div>
+      <div class="sub">En todas las entregas</div>
+    </div>
+    <div class="summary-card sage">
+      <div class="label">Total Cobrado</div>
+      <div class="value">${fmtMoney(s.totalPagado)}</div>
+      <div class="sub">Pagos recibidos</div>
+    </div>
+    <div class="summary-card warning">
+      <div class="label">Por Cobrar</div>
+      <div class="value">${fmtMoney(s.saldo)}</div>
+      <div class="sub">${estudiosConSaldo} estudio(s) con saldo</div>
+    </div>
+    <div class="summary-card gray">
+      <div class="label">Calcetas Entregadas</div>
+      <div class="value">${s.totalCalcetas}</div>
+      <div class="sub">En ${db.entregas.length} entrega(s)</div>
+    </div>
+  `;
+
+  const tbody = document.getElementById('resumenTable');
+  if (!db.estudios.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Agrega estudios para ver el resumen</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = db.estudios.map(e => {
+    const st = getStats(e.id);
+    let badge, estadoLabel;
+    if (st.saldo <= 0) { badge = 'badge-green'; estadoLabel = 'Al corriente'; }
+    else if (st.saldo < st.totalFacturado * 0.5) { badge = 'badge-orange'; estadoLabel = 'Pago parcial'; }
+    else { badge = 'badge-red'; estadoLabel = 'Saldo pendiente'; }
+    return `
+    <tr>
+      <td><strong>${e.nombre}</strong>${e.ciudad ? `<br><span style="font-size:0.78rem;color:var(--gray-mid)">${e.ciudad}</span>` : ''}</td>
+      <td>${st.totalCalcetas}</td>
+      <td class="amount-total">${fmtMoney(st.totalFacturado)}</td>
+      <td class="amount-pagado">${fmtMoney(st.totalPagado)}</td>
+      <td class="amount-saldo ${st.saldo > 0 ? 'danger' : 'ok'}">${fmtMoney(st.saldo)}</td>
+      <td><span class="badge ${badge}">${estadoLabel}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// =========== RENDER ALL ===========
+function renderAll() {
+  populateSelects();
+  renderResumen();
+  renderEstudios();
+  renderEntregas();
+  renderPagos();
+}
+
+// =========== INIT ===========
+document.addEventListener('DOMContentLoaded', () => {
+  loadDB();
+
+  // set today dates
+  document.getElementById('entFecha').value = todayStr();
+  document.getElementById('pagoFecha').value = todayStr();
+
+  // header date
+  const now = new Date();
+  document.getElementById('headerDate').textContent = now.toLocaleDateString('es-MX', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  renderAll();
+});
+</script>
+</body>
+</html>
